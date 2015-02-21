@@ -20,6 +20,10 @@ var stringifyJSON = function(obj) {
   } else if (Array.isArray(obj)){
   	var result = '[';
   	for (var i = 0; i<obj.length; i++){
+  		if (obj[i]===undefined || typeof(obj[i])===typeof(function(){})){
+  			continue;
+  		}
+
   		result += stringifyJSON(obj[i]);
   		result += (i===(obj.length-1)) ? '' : ',';
   	}
