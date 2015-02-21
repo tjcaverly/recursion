@@ -11,6 +11,8 @@ var stringifyJSON = function(obj) {
 
   	result = 'null';
 
+  } else if (obj===undefined || typeof(obj)===typeof(function(){})) {
+  	return undefined;
   } else if (typeof(obj)===typeof(0) || typeof(obj)===typeof(true)) {
   	result =  String(obj);
   } else if(typeof(obj)===typeof("")) {
@@ -25,6 +27,9 @@ var stringifyJSON = function(obj) {
   } else if(typeof(obj)===typeof({})) {
   	var result = '{';
   	for (var key in obj){
+  		if (obj[key]===undefined || typeof(obj[key])===typeof(function(){})){
+  			continue;
+  		}
   		if (result.length !== 1) {
   			result += ',';
   		}
