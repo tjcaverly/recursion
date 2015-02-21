@@ -5,7 +5,6 @@
 
 var stringifyJSON = function(obj) {
   // your code goes here
-  console.log(obj);
   var result = '';
   if (obj===null) {
 
@@ -43,7 +42,6 @@ var stringifyJSON = function(obj) {
 
   }
 
-  console.log(result);
   return result;
 
 
