@@ -4,45 +4,64 @@
 // but you don't so you're going to write it from scratch:
 
 var stringifyJSON = function(obj) {
-  // your code goes here
-  var result = '';
-  if (obj===null) {
 
+  var result;
+
+  // returns true if obj is undefined or a function
+  var isUnstringable = function(obj) {
+  	return ( (obj === undefined) || (typeof(obj)===typeof(function(){})) );
+  }
+
+  // stringify null
+  if (obj === null) 
+  {
   	result = 'null';
-
-  } else if (obj===undefined || typeof(obj)===typeof(function(){})) {
-  	return undefined;
-  } else if (typeof(obj)===typeof(0) || typeof(obj)===typeof(true)) {
-  	result =  String(obj);
-  } else if(typeof(obj)===typeof("")) {
+  } 
+  // ignore unstringifyable objects
+  else if ( isUnstringable(obj) ) 
+  {
+  	result = undefined;
+  } 
+  // stringify numbers and booleans
+  else if (typeof(obj)===typeof(0) || typeof(obj)===typeof(true)) 
+  {
+  	result = String(obj);
+  } 
+  // stringify strings
+  else if(typeof(obj)===typeof("")) 
+  {
   	result = '"' + obj + '"';
-  } else if (Array.isArray(obj)){
+  } 
+  //stringify arrays
+  else if (Array.isArray(obj))
+  {
   	var result = '[';
   	for (var i = 0; i<obj.length; i++){
-  		if (obj[i]===undefined || typeof(obj[i])===typeof(function(){})){
+  		if ( isUnstringable(obj[i]) ){
   			continue;
   		}
 
   		result += stringifyJSON(obj[i]);
-  		result += (i===(obj.length-1)) ? '' : ',';
+  		result += (i === (obj.length-1)) ? '' : ','; // place commas between elements
   	}
   	result += ']';
-  } else if(typeof(obj)===typeof({})) {
+  } 
+  // stringify non-array objects 
+  else if(typeof(obj) === typeof({})) 
+  {
   	var result = '{';
   	for (var key in obj){
-  		if (obj[key]===undefined || typeof(obj[key])===typeof(function(){})){
+  		if ( isUnstringable(obj[key]) ){
   			continue;
   		}
   		if (result.length !== 1) {
-  			result += ',';
+  			result += ','; //place commas between elements
   		}
-  		result += stringifyJSON(key) + ':' + stringifyJSON(obj[key]);
+  		result += stringifyJSON(key) + ':' + stringifyJSON(obj[key]); //stringify an element
   	}
   	result += '}';
 
   }
 
   return result;
-
-
 };
